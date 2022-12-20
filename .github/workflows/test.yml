@@ -1,0 +1,30 @@
+on: [push, pull_request]
+name: Push
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [1.19.x]
+        os: [windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          go get .
+          go get golang.org/x/sys/windows/registry
+          go get github.com/spf13/cobra
+          go get github.com/ConradIrwin/font/sfnt
+
+      - name: Build
+        run: go build
+
+      - name: Test with the Go CLI
+        run: go test

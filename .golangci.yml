@@ -1,0 +1,18 @@
+run:
+  tests: false
+  timeout: 2m
+  issues-exit-code: 2
+linters:
+  enable:
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - typecheck
+    - unused
+issues:
+  exclude-rules:
+    - path: cmd/
+      linters:
+        - errcheck
