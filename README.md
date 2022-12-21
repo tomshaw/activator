@@ -5,6 +5,7 @@
 ![Supported Version](https://img.shields.io/badge/go%20version-%3E%3D1.19-turquoise)
 [![Go Report Card](https://goreportcard.com/badge/github.com/tomshaw/activator)](https://goreportcard.com/report/github.com/tomshaw/activator)
 [![License](https://img.shields.io/github/license/tomshaw/activator)](https://github.com/tomshaw/activator/blob/master/LICENSE)
+![Go version](https://img.shields.io/github/go-mod/go-version/tomshaw/activator)
 
 Activator is a command line font management tool used with [Fontastic](https://github.com/tomshaw/fontastic) Electron Font Manager.
 
