@@ -51,7 +51,6 @@ func install(font *FontData) (err error) {
 	value := fmt.Sprintf("%v %v", font.FontName, font.MimeType)
 
 	if !utils.FileExists(target) {
-		fmt.Print("Writting file")
 		if err = os.WriteFile(target, font.Data, 0o644); err != nil { //nolint
 			return fmt.Errorf("Error writing file: %w", err)
 		}
