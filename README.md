@@ -24,7 +24,7 @@ Run `activator -h` to print help instructions.
 
 ## Font Installation
 
-`activator` is a command line font installation tool used with [Fontastic](https://github.com/tomshaw/fontastic) Electron Font Manager.
+> The following commands must be used with elevated or administrative privileges.
 
 ### Installing Fonts
 
