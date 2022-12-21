@@ -2,58 +2,70 @@ package system
 
 import (
 	"fmt"
+	"github.com/tomshaw/activator/utils"
 	"io"
-	"io/fs"
+	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
-
-	"github.com/tomshaw/activator/utils"
 )
 
-func CopyFiles(source, destination string) error {
-	err := filepath.WalkDir(source, func(file string, item fs.DirEntry, err error) error {
-		if err != nil {
-			return fmt.Errorf("Unsupported mime type: %w", err)
-		}
-		if _, ok := utils.SystemFontTypes[filepath.Ext(item.Name())]; ok {
-			dst := path.Join(destination, item.Name())
-			_, err := copy(file, dst)
-			if err != nil {
+func CopyFiles(src string, dst string) error {
+	var err error
+	var fds []os.FileInfo
+	var srcinfo os.FileInfo
+
+	if srcinfo, err = os.Stat(src); err != nil {
+		return err
+	}
+
+	if err = os.MkdirAll(dst, srcinfo.Mode()); err != nil {
+		return err
+	}
+
+	if fds, err = ioutil.ReadDir(src); err != nil {
+		return err
+	}
+	for _, fd := range fds {
+		srcfp := path.Join(src, fd.Name())
+		dstfp := path.Join(dst, fd.Name())
+
+		if fd.IsDir() {
+			if err = CopyFiles(srcfp, dstfp); err != nil {
 				return fmt.Errorf("Copy failed %w\n", err)
 			}
+		} else {
+			if _, ok := utils.SystemFontTypes[filepath.Ext(fd.Name())]; ok {
+				if err = Copy(srcfp, dstfp); err != nil {
+					return fmt.Errorf("Copy failed %w\n", err)
+				}
+			}
 		}
-		return nil
-	})
-	if err != nil {
-		return fmt.Errorf("WalkDir process error: %w", err)
 	}
 	return nil
 }
 
-func copy(src, dst string) (int64, error) {
-	sourceFileStat, err := os.Stat(src)
-	if err != nil {
-		return 0, err
+func Copy(src, dst string) error {
+	var err error
+	var srcfd *os.File
+	var dstfd *os.File
+	var srcinfo os.FileInfo
+
+	if srcfd, err = os.Open(src); err != nil {
+		return err
 	}
+	defer srcfd.Close()
 
-	if !sourceFileStat.Mode().IsRegular() {
-		return 0, fmt.Errorf("%s is not a regular file", src)
+	if dstfd, err = os.Create(dst); err != nil {
+		return err
 	}
+	defer dstfd.Close()
 
-	source, err := os.Open(src)
-	if err != nil {
-		return 0, err
+	if _, err = io.Copy(dstfd, srcfd); err != nil {
+		return err
 	}
-	defer source.Close()
-
-	destination, err := os.Create(dst)
-	if err != nil {
-		return 0, err
+	if srcinfo, err = os.Stat(src); err != nil {
+		return err
 	}
-	defer destination.Close()
-
-	nBytes, err := io.Copy(destination, source)
-
-	return nBytes, err
+	return os.Chmod(dst, srcinfo.Mode())
 }
