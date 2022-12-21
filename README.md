@@ -6,7 +6,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/tomshaw/activator)](https://goreportcard.com/report/github.com/tomshaw/activator)
 [![License](https://img.shields.io/github/license/tomshaw/activator)](https://github.com/tomshaw/activator/blob/master/LICENSE)
 
-`activator` is a command line font management tool used with [Fontastic](https://github.com/tomshaw/fontastic) Electron Font Manager.
+Activator is a command line font management tool used with [Fontastic](https://github.com/tomshaw/fontastic) Electron Font Manager.
 
 ## Installation
 
@@ -29,16 +29,16 @@ Run `activator -h` to print help instructions.
 ### Installing Fonts
 
 ```sh
-activator install "Font-Name.otf"
+activator install "<source-folder>/Font-Name.otf"
 ``` 
 
 ### Uninstalling Fonts
 
 ```sh
-activator uninstall "Font-Name.otf"
+activator uninstall "<system-folder>/Font-Name.otf"
 ``` 
 
-### Temporary Installation
+### Temporary Install
 
 Windows supports installing fonts temporarily. Fonts are automatically removed after a system reboot. 
 
@@ -46,7 +46,7 @@ Windows supports installing fonts temporarily. Fonts are automatically removed a
 activator install --temporary=true "Font-Name.otf"
 ``` 
 
-### Temp Uninstallation 
+### Temporary Uninstall 
 
 ```sh
 activator uninstall --temporary=true "Font-Name.otf"
@@ -64,7 +64,7 @@ activator install "Font-Name.otf" "Font-Name Bold.otf" "Font-Name Bold Italic.ot
 
 ## Font Management
 
-Included utility commands to help manage system fonts.
+Utility commands to help manage system fonts.
 
 ### Finding Fonts
 
