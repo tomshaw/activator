@@ -26,19 +26,19 @@ Run `activator -h` to print help instructions.
 
 > The following commands must be used with elevated or administrative privileges.
 
-### Installing Fonts
+### Adding Fonts
 
 ```sh
 activator install "<source-folder>/Font-Name.otf"
 ``` 
 
-### Uninstalling Fonts
+### Removing Fonts
 
 ```sh
 activator uninstall "<system-folder>/Font-Name.otf"
 ``` 
 
-### Temporary Install
+### Temporary Font Installation
 
 Windows supports installing fonts temporarily. Fonts are automatically removed after a system reboot. 
 
@@ -46,7 +46,7 @@ Windows supports installing fonts temporarily. Fonts are automatically removed a
 activator install --temporary=true "Font-Name.otf"
 ``` 
 
-### Temporary Uninstall 
+### Temporary Font Uninstallation 
 
 ```sh
 activator uninstall --temporary=true "Font-Name.otf"
