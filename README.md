@@ -29,13 +29,13 @@ Run `activator -h` to print help instructions.
 ### Adding Fonts
 
 ```sh
-activator install "<source-folder>/Font-Name.otf"
+activator install "<path-source-folder>/Font-Name.otf"
 ``` 
 
 ### Removing Fonts
 
 ```sh
-activator uninstall "<system-folder>/Font-Name.otf"
+activator uninstall "<path-system-folder>/Font-Name.otf"
 ``` 
 
 ### Temporary Font Installation
@@ -62,7 +62,7 @@ activator install "Font-Name.otf" "Font-Name Bold.otf" "Font-Name Bold Italic.ot
 
 ---
 
-## Font Management
+## Miscellaneous Commands
 
 Utility commands to help manage system fonts.
 
@@ -76,7 +76,7 @@ activator fonts find --root "C:\Fonts"
 
 ### Copying Fonts
 
-Copies fonts from source to destination folder.
+Copies fonts from `source` to `destination` folder.
 
 ```sh
 activator fonts copy --source "C:\Fonts" --destination "C:\Dest"
