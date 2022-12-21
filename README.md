@@ -38,17 +38,9 @@ activator install "Font-Name.otf"
 activator uninstall "Font-Name.otf"
 ``` 
 
-### Multiple Fonts
-
-Installing multiple fonts is supported by separating paths by a space.
-
-```sh
-activator install "Font-Name.otf" "Font-Name Bold.otf" "Font-Name Bold Italic.otf"
-``` 
-
 ### Temporary Installation
 
-Windows supports installing fonts temporarily. Fonts are removed after a system reboot. 
+Windows supports installing fonts temporarily. Fonts are automatically removed after a system reboot. 
 
 ```sh
 activator install --temporary=true "Font-Name.otf"
@@ -58,6 +50,14 @@ activator install --temporary=true "Font-Name.otf"
 
 ```sh
 activator uninstall --temporary=true "Font-Name.otf"
+``` 
+
+### Multiple Fonts
+
+Working with arrays of fonts is supported by separating each font path by a space.
+
+```sh
+activator install "Font-Name.otf" "Font-Name Bold.otf" "Font-Name Bold Italic.otf"
 ``` 
 
 ---
