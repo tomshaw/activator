@@ -1,7 +1,7 @@
-//go:build linux || solaris || openbsd || freebsd || darwin
-// +build linux solaris openbsd freebsd darwin
+//go:build unix
+// +build unix
 
-package installer
+package install
 
 import (
 	"fmt"
@@ -28,5 +28,15 @@ func uninstall(font *FontData) (err error) {
 			return fmt.Errorf("Error removing file: %w", err)
 		}
 	}
+	return nil
+}
+
+// Windows function stub
+func winTempInstall(font *FontData) (err error) {
+	return nil
+}
+
+// Windows function stub
+func winTempUninstall(font *FontData) (err error) {
 	return nil
 }
