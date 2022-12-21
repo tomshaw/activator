@@ -7,20 +7,19 @@ import (
 	"path/filepath"
 )
 
-func FindFiles(root string) []string {
+func FindFiles(root string) ([]string, error) {
 	var found []string
 	err := filepath.WalkDir(root, func(f string, item fs.DirEntry, err error) error {
 		if err != nil {
-			return fmt.Errorf("Unsupported mime type: %w", err)
+			return fmt.Errorf("WalkDir error: %w", err)
 		}
 		if _, ok := utils.SystemFontTypes[filepath.Ext(item.Name())]; ok {
 			found = append(found, f)
-			fmt.Println(found)
 		}
 		return nil
 	})
 	if err != nil {
-		fmt.Printf("WalkDir process error")
+		return nil, err
 	}
-	return found
+	return found, nil
 }
