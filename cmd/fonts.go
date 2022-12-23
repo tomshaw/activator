@@ -38,7 +38,7 @@ var copyFilesCmd = &cobra.Command{
 		startTime := time.Now()
 		err := system.CopyFiles(source, destination)
 		if err != nil {
-			log.Fatalf("Fatal error %p", err)
+			log.Fatalf("Fatal error %v", err)
 		}
 		fmt.Printf("Execution time: %s", time.Since(startTime))
 	},
@@ -54,7 +54,7 @@ var copyFilesFoldersCmd = &cobra.Command{
 		startTime := time.Now()
 		err := system.CopyFilesFolders(source, destination)
 		if err != nil {
-			log.Fatalf("Fatal error %p", err)
+			log.Fatalf("Fatal error %v", err)
 		}
 		fmt.Printf("Execution time: %s", time.Since(startTime))
 	},

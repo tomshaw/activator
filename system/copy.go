@@ -5,7 +5,6 @@ import (
 	"github.com/tomshaw/activator/utils"
 	"io"
 	"io/fs"
-	"log"
 	"os"
 	"path"
 	"path/filepath"
@@ -38,7 +37,7 @@ func CopyFilesFolders(src string, dst string) error {
 		} else {
 			if _, ok := utils.SystemFontTypes[filepath.Ext(fd.Name())]; ok {
 				if err = Copy(srcfp, dstfp); err != nil {
-					log.Fatalf("Copy failed %v", err)
+					return fmt.Errorf("Copy failed %w\n", err)
 				}
 			}
 		}
@@ -47,7 +46,18 @@ func CopyFilesFolders(src string, dst string) error {
 }
 
 func CopyFiles(src, dst string) error {
-	err := filepath.WalkDir(src, func(src string, item fs.DirEntry, err error) error {
+	var err error
+	var srcinfo os.FileInfo
+
+	if srcinfo, err = os.Stat(src); err != nil {
+		return err
+	}
+
+	if err = os.MkdirAll(dst, srcinfo.Mode()); err != nil {
+		return err
+	}
+
+	err = filepath.WalkDir(src, func(src string, item fs.DirEntry, err error) error {
 		if err != nil {
 			return fmt.Errorf("Unsupported mime type: %w", err)
 		}
@@ -55,7 +65,7 @@ func CopyFiles(src, dst string) error {
 			dst := path.Join(dst, item.Name())
 			err := Copy(src, dst)
 			if err != nil {
-				log.Fatalf("Copy failed %v", err)
+				return fmt.Errorf("Copy failed %w\n", err)
 			}
 		}
 		return nil
