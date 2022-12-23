@@ -63,7 +63,7 @@ activator install "Font-Name.otf" "Font-Name Bold.otf" "Font-Name Bold Italic.ot
 
 ---
 
-## Miscellaneous Commands
+## Copy Commands
 
 Utility commands to help manage system fonts.
 

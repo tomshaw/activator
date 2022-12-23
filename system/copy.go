@@ -5,6 +5,7 @@ import (
 	"github.com/tomshaw/activator/utils"
 	"io"
 	"io/fs"
+	"log"
 	"os"
 	"path"
 	"path/filepath"
@@ -37,7 +38,7 @@ func CopyFilesFolders(src string, dst string) error {
 		} else {
 			if _, ok := utils.SystemFontTypes[filepath.Ext(fd.Name())]; ok {
 				if err = Copy(srcfp, dstfp); err != nil {
-					return fmt.Errorf("Copy failed %w\n", err)
+					log.Fatalf("Copy failed %v", err)
 				}
 			}
 		}
@@ -54,7 +55,7 @@ func CopyFiles(src, dst string) error {
 			dst := path.Join(dst, item.Name())
 			err := Copy(src, dst)
 			if err != nil {
-				return fmt.Errorf("Copy failed %w\n", err)
+				log.Fatalf("Copy failed %v", err)
 			}
 		}
 		return nil
