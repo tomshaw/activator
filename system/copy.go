@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 )
 
-func CopyFiles(src string, dst string) error {
+func CopyFilesFolders(src string, dst string) error {
 	var err error
 	var fds []fs.DirEntry
 	var srcinfo os.FileInfo
@@ -31,7 +31,7 @@ func CopyFiles(src string, dst string) error {
 		dstfp := path.Join(dst, fd.Name())
 
 		if fd.IsDir() {
-			if err = CopyFiles(srcfp, dstfp); err != nil {
+			if err = CopyFilesFolders(srcfp, dstfp); err != nil {
 				return fmt.Errorf("Copy failed %w\n", err)
 			}
 		} else {
@@ -45,18 +45,44 @@ func CopyFiles(src string, dst string) error {
 	return nil
 }
 
-func Copy(src, dst string) error {
-	var err error
-	var srcfd *os.File
-	var dstfd *os.File
-	var srcinfo os.FileInfo
+func CopyFiles(src, dst string) error {
+	err := filepath.WalkDir(src, func(src string, item fs.DirEntry, err error) error {
+		if err != nil {
+			return fmt.Errorf("Unsupported mime type: %w", err)
+		}
+		if _, ok := utils.SystemFontTypes[filepath.Ext(item.Name())]; ok {
+			dst := path.Join(dst, item.Name())
+			err := Copy(src, dst)
+			if err != nil {
+				return fmt.Errorf("Copy failed %w\n", err)
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		return fmt.Errorf("WalkDir process error: %w", err)
+	}
+	return nil
+}
 
-	if srcfd, err = os.Open(src); err != nil {
+func Copy(src, dst string) error {
+	sourceFileStat, err := os.Stat(src)
+	if err != nil {
+		return err
+	}
+
+	if !sourceFileStat.Mode().IsRegular() {
+		return fmt.Errorf("%s is not a regular file", src)
+	}
+
+	srcfd, err := os.Open(src)
+	if err != nil {
 		return err
 	}
 	defer srcfd.Close()
 
-	if dstfd, err = os.Create(dst); err != nil {
+	dstfd, err := os.Create(dst)
+	if err != nil {
 		return err
 	}
 	defer dstfd.Close()
@@ -64,8 +90,6 @@ func Copy(src, dst string) error {
 	if _, err = io.Copy(dstfd, srcfd); err != nil {
 		return err
 	}
-	if srcinfo, err = os.Stat(src); err != nil {
-		return err
-	}
-	return os.Chmod(dst, srcinfo.Mode())
+
+	return nil
 }

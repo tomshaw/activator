@@ -75,12 +75,20 @@ Finds and prints fonts including sub folders.
 activator fonts find --root "C:\Fonts"
 ``` 
 
-### Copying Fonts
+### Copy Fonts
 
-Copies fonts from `source` to `destination` folder.
+Copies **fonts** from `source` to `destination`.
 
 ```sh
 activator fonts copy --source "C:\Fonts" --destination "C:\Dest"
+``` 
+
+### Copy Font Folders
+
+Copies **fonts** and  **folders** from `source` to `destination` keeping directory hierarchy
+
+```sh
+activator fonts copyf --source "C:\Fonts" --destination "C:\Dest"
 ``` 
 
 ---

@@ -14,7 +14,7 @@ var fontsCmd = &cobra.Command{
 	Short: "commands to find or move font folders.",
 }
 
-var findCmd = &cobra.Command{
+var findFontsCmd = &cobra.Command{
 	Use:   "find",
 	Short: "Search for files recursively from selected folder.",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -29,7 +29,7 @@ var findCmd = &cobra.Command{
 	Example: `activator fonts find --root "C:\Fonts"`,
 }
 
-var copyCmd = &cobra.Command{
+var copyFilesCmd = &cobra.Command{
 	Use:   "copy",
 	Short: "Copy font files from source to destination.",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -45,15 +45,36 @@ var copyCmd = &cobra.Command{
 	Example: `activator fonts copy --source "C:\Fonts" --destination "C:\Dest"`,
 }
 
+var copyFilesFoldersCmd = &cobra.Command{
+	Use:   "copyf",
+	Short: "Copy font files and source folders to destination.",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("Source: %s\n", source)
+		fmt.Printf("Destination: %s\n", destination)
+		startTime := time.Now()
+		err := system.CopyFilesFolders(source, destination)
+		if err != nil {
+			log.Fatalf("Fatal error %p", err)
+		}
+		fmt.Printf("Execution time: %s", time.Since(startTime))
+	},
+	Example: `activator fonts copy --source "C:\Fonts" --destination "C:\Dest"`,
+}
+
 func init() {
 	rootCmd.AddCommand(fontsCmd)
-	fontsCmd.AddCommand(findCmd, copyCmd)
+	fontsCmd.AddCommand(findFontsCmd, copyFilesCmd, copyFilesFoldersCmd)
 
-	findCmd.Flags().StringVarP(&root, "root", "r", "", "Root directory (required)")
-	findCmd.MarkFlagRequired("root")
+	findFontsCmd.Flags().StringVarP(&root, "root", "r", "", "Root directory (required)")
+	findFontsCmd.MarkFlagRequired("root")
 
-	copyCmd.Flags().StringVarP(&source, "source", "s", "", "Source directory (required)")
-	copyCmd.MarkFlagRequired("source")
-	copyCmd.Flags().StringVarP(&destination, "destination", "d", "", "Destination directory (required)")
-	copyCmd.MarkFlagRequired("destination")
+	copyFilesCmd.Flags().StringVarP(&source, "source", "s", "", "Source directory (required)")
+	copyFilesCmd.MarkFlagRequired("source")
+	copyFilesCmd.Flags().StringVarP(&destination, "destination", "d", "", "Destination directory (required)")
+	copyFilesCmd.MarkFlagRequired("destination")
+
+	copyFilesFoldersCmd.Flags().StringVarP(&source, "source", "s", "", "Source directory (required)")
+	copyFilesFoldersCmd.MarkFlagRequired("source")
+	copyFilesFoldersCmd.Flags().StringVarP(&destination, "destination", "d", "", "Destination directory (required)")
+	copyFilesFoldersCmd.MarkFlagRequired("destination")
 }
