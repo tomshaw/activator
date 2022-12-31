@@ -63,9 +63,21 @@ activator install "Font-Name.otf" "Font-Name Bold.otf" "Font-Name Bold Italic.ot
 
 ---
 
-## Copy Commands
+### Copy Font Files
 
-Utility commands to help manage system fonts.
+Copies **font** files to `destination`.
+
+```sh
+activator copy files --destination "Font-Name.otf" "Font-Name Bold.otf" "Font-Name Bold Italic.otf"
+``` 
+
+### Copy Font Folders
+
+Copies **fonts/folders** from `source` to `destination`.
+
+```sh
+activator copy folders --source "C:\Fonts" --destination "C:\Dest"
+``` 
 
 ### Finding Fonts
 
@@ -75,21 +87,6 @@ Finds and prints fonts including sub folders.
 activator fonts find --root "C:\Fonts"
 ``` 
 
-### Copy Fonts
-
-Copies **fonts** from `source` to `destination`.
-
-```sh
-activator fonts copy --source "C:\Fonts" --destination "C:\Dest"
-``` 
-
-### Copy Font Folders
-
-Copies **fonts** and  **folders** from `source` to `destination` keeping directory hierarchy
-
-```sh
-activator fonts copyf --source "C:\Fonts" --destination "C:\Dest"
-``` 
 
 ---
 

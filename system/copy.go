@@ -26,6 +26,7 @@ func CopyFilesFolders(src string, dst string) error {
 	if fds, err = os.ReadDir(src); err != nil {
 		return err
 	}
+
 	for _, fd := range fds {
 		srcfp := path.Join(src, fd.Name())
 		dstfp := path.Join(dst, fd.Name())
@@ -45,33 +46,26 @@ func CopyFilesFolders(src string, dst string) error {
 	return nil
 }
 
-func CopyFiles(src, dst string) error {
+func CopyFiles(dst string, files []string) error {
 	var err error
-	var srcinfo os.FileInfo
 
-	if srcinfo, err = os.Stat(src); err != nil {
+	if err = os.MkdirAll(dst, 0664); err != nil {
 		return err
 	}
 
-	if err = os.MkdirAll(dst, srcinfo.Mode()); err != nil {
-		return err
-	}
-
-	err = filepath.WalkDir(src, func(src string, item fs.DirEntry, err error) error {
+	for _, srcfp := range files {
+		fileStat, err := os.Stat(srcfp)
 		if err != nil {
-			return fmt.Errorf("Unsupported mime type: %w", err)
+			return err
 		}
-		if _, ok := utils.SystemFontTypes[filepath.Ext(item.Name())]; ok {
-			dst := path.Join(dst, item.Name())
-			err := Copy(src, dst)
-			if err != nil {
+
+		dstfp := path.Join(dst, fileStat.Name())
+
+		if _, ok := utils.SystemFontTypes[filepath.Ext(fileStat.Name())]; ok {
+			if err = Copy(srcfp, dstfp); err != nil {
 				return fmt.Errorf("Copy failed %w\n", err)
 			}
 		}
-		return nil
-	})
-	if err != nil {
-		return fmt.Errorf("WalkDir process error: %w", err)
 	}
 	return nil
 }
