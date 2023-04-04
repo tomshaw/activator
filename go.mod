@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/ConradIrwin/font v0.0.0-20210318200717-ce8d41cc0732
-	github.com/spf13/cobra v1.6.1
+	github.com/spf13/cobra v1.7.0
 	golang.org/x/sys v0.6.0
 )
 
